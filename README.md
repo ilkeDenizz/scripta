@@ -38,7 +38,7 @@ Right Click: Deploy Cyber Flag (P)
 
 🤝 CREDITS & ATTRIBUTION
 
-Street Fighter Emulator: The web-based CPS-2 emulation infrastructure is integrated using open-source retro gaming emulation layers. The original emulation core and ROM loading mechanics are adapted from the official project repository: gamedev8/js-sfa.
+Street Fighter Emulator: The web-based CPS-2 emulation infrastructure is integrated using open-source retro gaming emulation layers. The original emulation core and ROM loading mechanics are adapted from the official project repository: gamedev8.github.io/js-sfa(https://gamedev8.github.io/js-sfa/default.htm)
 
 🛠️ TECH STACK // SYSTEM COMPONENTS
 Plaintext
