@@ -6,7 +6,31 @@
     font-family: "D7MBI";
     src: url("./fonts/DSEG/fonts/DSEG7-Modern/DSEG7Modern-BoldItalic.woff") format('woff');
 }
+/* Masaüstü arka planını, klasörleri ve yan panelleri tamamen uçuruyoruz */
+body {
+    background: #030303 !important; /* Mavi arka planı sitenin siyah rengiyle eşitle */
+    background-image: none !important;
+}
 
+/* Klasör ikonları ve GitHub şeridini gizle */
+.folder, .file, .instructions, a[href*="github.com"] {
+    display: none !important;
+}
+
+/* Yüksek skorlar kağıdını gizle */
+#high-scores, .high-scores, [id*="score"] {
+    display: none !important;
+}
+
+/* Ortadaki asıl mayın tarlası penceresini ekrana tam ortala */
+#game-window, .window, #minesweeper {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+}
 html {
     position: relative;
     min-height: 100%;
