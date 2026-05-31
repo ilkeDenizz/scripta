@@ -311,3 +311,29 @@ body {
     -o-transform: rotate(-45deg);
     transform: rotate(-45deg);
 }
+/* --- SADECE RETRO OYUNU BIRAKMA HACK'I --- */
+
+/* 1. Mavi masaüstü arka planını ve alttaki beyaz barı tamamen sitenin siyahı yapıyoruz */
+body, html {
+    background: #030303 !important;
+    background-image: none !important;
+}
+footer, .footer, body > div:last-child { 
+    display: none !important; 
+}
+
+/* 2. Etraftaki sahte klasörleri, sarı not kağıdını ve notepad pencerelerini uçuruyoruz */
+.folder, .file, #high-scores, .high-scores, #instructions, .instructions, 
+a[href*="github.com"], .notepad, #notepad, [id*="Notpad"], [class*="notepad"] {
+    display: none !important;
+}
+
+/* 3. Ortadaki asıl gri Mayın Tarlası penceresini ekrana tam ortalıyoruz */
+#game-window, .window, #minesweeper, .minesweeper-container {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    margin: 0 !important;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.2) !important; /* Cyberpunk hafif bir yeşil parlama */
+}
