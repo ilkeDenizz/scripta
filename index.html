@@ -145,9 +145,10 @@
             text-decoration: none;
             transition: 0.2s;
             display: block;
+            cursor: pointer;
         }
 
-        nav ul li a:hover {
+        nav ul li a:hover, nav ul li a.active-nav {
             color: var(--accent);
             padding-left: 8px;
             text-shadow: 0 0 8px var(--accent);
@@ -157,6 +158,15 @@
             grid-area: main;
             padding: 40px;
             background: rgba(0, 0, 0, 0.2);
+        }
+
+        /* Sayfa Bölümleri Yönetimi (Görünürlük Stilleri) */
+        .page-section {
+            display: none; /* Varsayılan olarak tüm bölümler gizli */
+        }
+
+        .page-section.active-section {
+            display: block; /* Sadece aktif olan bölüm görünecek */
         }
 
         .content-box {
@@ -203,27 +213,40 @@
             font-weight: bold;
         }
 
-        /* Arcade Launch Button Styling */
-        .arcade-btn {
-            display: inline-block;
-            padding: 15px 30px;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            text-decoration: none;
+        /* Kabin Çerçeve Tasarımı */
+        .arcade-frame-wrapper {
+            position: relative;
+            width: 100%;
+            background: #000;
+            border: 2px solid #333;
+            padding: 10px;
+            margin-top: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+        }
+        
+        .arcade-frame-wrapper::before {
+            content: "ARCADE_CABINET // LIVE_STREAM";
+            position: absolute;
+            top: -12px;
+            left: 15px;
+            background: var(--bg-color);
+            padding: 0 10px;
+            font-size: 0.7rem;
+            color: var(--pink-glitch);
             font-weight: bold;
-            font-size: 1.1rem;
-            background: rgba(0, 255, 65, 0.02);
-            transition: all 0.3s ease;
-            box-shadow: 0 0 10px rgba(0, 255, 65, 0.1);
-            letter-spacing: 1px;
         }
 
-        .arcade-btn:hover {
-            background: var(--accent);
-            color: #030303;
-            box-shadow: 0 0 25px var(--accent);
-            transform: scale(1.05);
-            text-shadow: none;
+        .game-container {
+            width: 100%;
+            height: 530px;
+            border: 1px solid var(--secondary);
+            background: #000;
+        }
+
+        .game-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
 
         footer {
@@ -250,9 +273,12 @@
                 border-right: none;
                 border-bottom: var(--border-style);
             }
+            .game-container {
+                height: 350px;
+            }
         }
 
-        /* Medusa Styling */
+        /* Medusa */
         .medusa-container {
             position: relative;
             display: inline-block;
@@ -300,16 +326,16 @@
     <div class="container">
         <header>
             <div class="glitch">SYSTEM ONLINE</div>
-            <p style="margin-top: 10px; color: var(--secondary);">[ Connectivity Established // Ver 2.0.5 ]</p>
+            <p style="margin-top: 10px; color: var(--secondary);">[ Connectivity Established // Ver 2.0.6 ]</p>
         </header>
 
         <nav>
             <h3>DIRECTORY</h3>
             <ul>
-                <li><a href="#">// Home</a></li>
-                <li><a href="#arcade-section">// Arcade Cabinet</a></li>
-                <li><a href="#">// Projects</a></li>
-                <li><a href="#">// Guestbook</a></li>
+                <!-- data-target ile hangi bölümü tetikleyeceğini belirliyoruz -->
+                <li><a class="nav-link active-nav" data-target="home-section">// Home</a></li>
+                <li><a class="nav-link" data-target="arcade-section">// Arcade Cabinet</a></li>
+                <li><a class="nav-link" data-target="archive-section">// Archive</a></li>
             </ul>
 
             <div style="margin-top: 15px; background: #000; padding: 6px; border: 1px solid #222; font-size: 0.65rem; color: var(--accent);">
@@ -334,63 +360,73 @@
         </nav>
 
         <main>
-            <div class="content-box">
-                <h2>[ MANIFESTO ]</h2>
-                <p>Welcome to this isolated data block. In an era of algorithmic noise, this site stands as a
-                    <strong>digital sanctuary</strong>—a hand-coded space dedicated to personal expression.
-                </p>
-                <p style="margin-top: 15px; border-left: 3px solid var(--accent); padding-left: 15px; font-style: italic; color: var(--secondary);">
-                    "This terminal serves no algorithm. It serves only curiosity and the craft."
-                </p>
-            </div>
-
-            <!-- ARCADE CABINET SECTION -->
-            <div class="content-box" id="arcade-section">
-                <h2>[ PORTAL: PLAY_ZONE ]</h2>
-                <p style="font-size: 0.8rem; margin-bottom: 20px; color: #aaa;">
-                    Street Fighter Alpha evrenine giriş yapmak ve retro kabini tetiklemek için aşağıdaki bağlantıyı kullan hocam. Oyun yan sekmede tam ekran açılacaktır.
-                </p>
-                
-                <div style="text-align: center; padding: 20px;">
-                    <!-- target="_blank" sayesinde mevcut siten kapanmadan yan sekmede tertemiz açılır -->
-                    <a href="default.htm" target="_blank" class="arcade-btn">
-                        [ LAUNCH_GAME.EXE ]
-                    </a>
+            
+            <!-- 1. BÖLÜM: HOME (MANIFESTO & PROJELER) -->
+            <div id="home-section" class="page-section active-section">
+                <div class="content-box">
+                    <h2>[ MANIFESTO ]</h2>
+                    <p>Welcome to this isolated data block. In an era of algorithmic noise, this site stands as a
+                        <strong>digital sanctuary</strong>—a hand-coded space dedicated to personal expression.
+                    </p>
+                    <p style="margin-top: 15px; border-left: 3px solid var(--accent); padding-left: 15px; font-style: italic; color: var(--secondary);">
+                        "This terminal serves no algorithm. It serves only curiosity and the craft."
+                    </p>
                 </div>
-            </div>
 
-            <div class="content-box">
-                <h2>[ DATABASE: PROJECTS ]</h2>
+                <div class="content-box">
+                    <h2>[ DATABASE: PROJECTS ]</h2>
 
-                <div class="project-item">
-                    <span style="color: var(--accent); font-weight: bold;">> CYBERSNAKE.EXE</span>
-                    <p style="font-size: 0.75rem; margin-top: 5px;">Cyberpunk interpretation of the classic snake game. High-score logic implemented via local storage.</p>
-                    <div style="margin-top: 8px;">
-                        <span class="tag">JAVASCRIPT</span><span class="tag">CANVAS_API</span>
-                        <a href="#" style="color: var(--accent); font-size: 0.7rem; text-decoration: none;">[ SOURCE ]</a>
+                    <div class="project-item">
+                        <span style="color: var(--accent); font-weight: bold;">> CYBERSNAKE.EXE</span>
+                        <p style="font-size: 0.75rem; margin-top: 5px;">Cyberpunk interpretation of the classic snake game. High-score logic implemented via local storage.</p>
+                        <div style="margin-top: 8px;">
+                            <span class="tag">JAVASCRIPT</span><span class="tag">CANVAS_API</span>
+                            <a href="#" style="color: var(--accent); font-size: 0.7rem; text-decoration: none;">[ SOURCE ]</a>
+                        </div>
                     </div>
-                </div>
 
-                <div class="project-item">
-                    <span style="color: var(--accent); font-weight: bold;">> NEON_PLATFORMER_2D</span>
-                    <p style="font-size: 0.75rem; margin-top: 5px;">2D platformer physics and character controller research using Unity Engine.</p>
-                    <div style="margin-top: 8px;">
-                        <span class="tag">C#</span><span class="tag">UNITY</span>
-                        <span style="color: var(--pink-glitch); font-size: 0.7rem;">[ IN_PROGRESS ]</span>
+                    <div class="project-item">
+                        <span style="color: var(--accent); font-weight: bold;">> NEON_PLATFORMER_2D</span>
+                        <p style="font-size: 0.75rem; margin-top: 5px;">2D platformer physics and character controller research using Unity Engine.</p>
+                        <div style="margin-top: 8px;">
+                            <span class="tag">C#</span><span class="tag">UNITY</span>
+                            <span style="color: var(--pink-glitch); font-size: 0.7rem;">[ IN_PROGRESS ]</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="content-box" style="text-align: center;">
-                <h2>[ GALLERY: ARTIFACTS ]</h2>
-                <div class="medusa-container">
-                    <img src="medusa.jpg" class="medusa-img" alt="Medusa Artifact">
-                    <div class="scanline"></div>
+            <!-- 2. BÖLÜM: ARCADE GAME ZONE (BURASI AYRI BİR SAYFA GİBİ AÇILACAK) -->
+            <div id="arcade-section" class="page-section">
+                <div class="content-box">
+                    <h2>[ PORTAL: ARCADE_ZONE ]</h2>
+                    <p style="font-size: 0.8rem; margin-bottom: 15px; color: #aaa;">
+                        Klavye kontrollerini aktif etmek için oyun ekranına bir kez tıklaman yeterlidir hocam. Jeton atmak için <strong>CTRL</strong>, başlamak için <strong>ENTER</strong> tuşunu kullan.
+                    </p>
+                    
+                    <div class="arcade-frame-wrapper">
+                        <div class="game-container">
+                            <!-- Oyun dosyası ana dizinde olduğu için src="default.htm" olarak çağırıyoruz -->
+                            <iframe src="default.htm" title="Street Fighter Alpha"></iframe>
+                        </div>
+                    </div>
                 </div>
-                <p style="font-size: 0.7rem; color: var(--secondary); margin-top: 10px;">
-                    STATUS: RENDERED // SOURCE: MEDUSA.BMP
-                </p>
             </div>
+
+            <!-- 3. BÖLÜM: ARCHIVE (GALERİ / MEDUSA) -->
+            <div id="archive-section" class="page-section">
+                <div class="content-box" style="text-align: center;">
+                    <h2>[ GALLERY: ARTIFACTS ]</h2>
+                    <div class="medusa-container">
+                        <img src="medusa.jpg" class="medusa-img" alt="Medusa Artifact">
+                        <div class="scanline"></div>
+                    </div>
+                    <p style="font-size: 0.7rem; color: var(--secondary); margin-top: 10px;">
+                        STATUS: RENDERED // SOURCE: MEDUSA.BMP
+                    </p>
+                </div>
+            </div>
+
         </main>
 
         <footer>
@@ -399,6 +435,31 @@
     </div>
 
     <script>
+        /* === BÖLÜM (TAB) YÖNETİMİ SCRIPTI === */
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('.page-section');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                // Aktif menü stilini temizle ve yenisini ekle
+                navLinks.forEach(l => l.classList.remove('active-nav'));
+                link.classList.add('active-nav');
+
+                // Hedef bölümü bul
+                const targetSectionId = link.getAttribute('data-target');
+
+                // Tüm bölümleri gizle, sadece hedefi göster
+                sections.forEach(section => {
+                    if (section.id === targetSectionId) {
+                        section.classList.add('active-section');
+                    } else {
+                        section.classList.remove('active-section');
+                    }
+                });
+            });
+        });
+
+        /* === MÜZİK KUTUSU SCRIPTI === */
         const playlist = [
             { title: "MIDNIGHT_RAIN", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3" },
             { title: "DREAM_LOG_01", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" },
@@ -425,7 +486,6 @@
             }
         }
 
-        // Şarkı bitince otomatik sonrakine geçme
         audio.onended = () => {
             currentTrack = (currentTrack + 1) % playlist.length;
             updateTrack();
