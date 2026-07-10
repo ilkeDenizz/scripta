@@ -34,13 +34,13 @@
             text-decoration: underline;
         }
 
-       #stageScaleWrapper {
-    position: relative;
-    margin: 18px auto 0; /* 'auto' yatayda ortalar */
-    overflow: hidden;
-    display: flex;       /* Flexbox ekleyelim */
-    justify-content: center;
-    align-items: center;
+      #stageScaleWrapper{
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    width:100%;
+    overflow:hidden;
+    margin:20px auto;
 }
 
         /* On-screen touch controls: hidden by default, shown on small / touch screens */
@@ -394,11 +394,29 @@
             var wrapper = document.getElementById('stageScaleWrapper');
             var stage = document.getElementById('pnlStage');
 
-           function fitStage() {
-    if (!wrapper || !stage) return;
-    var availW = wrapper.parentElement.clientWidth || window.innerWidth;
-    var scale = Math.min(1, availW / BASE_W);
-    
+          function fitStage() {
+
+    const stage = document.getElementById("pnlStage");
+    const wrapper = document.getElementById("stageScaleWrapper");
+
+    const stageWidth = 768;
+    const stageHeight = 576;
+
+    const maxWidth = window.innerWidth - 40;
+    const maxHeight = window.innerHeight - 120;
+
+    const scale = Math.min(
+        maxWidth / stageWidth,
+        maxHeight / stageHeight,
+        1
+    );
+
+    stage.style.transform = `scale(${scale})`;
+    stage.style.transformOrigin = "top center";
+
+    wrapper.style.width = stageWidth * scale + "px";
+    wrapper.style.height = stageHeight * scale + "px";
+}
     // TransformOrigin'i ortalayacak şekilde değiştir
     stage.style.transform = 'scale(' + scale + ')';
     stage.style.transformOrigin = 'center top'; // 'top left' yerine 'center top'
