@@ -1,4 +1,4 @@
-# ⚡️ TERMINAL // PORTAL (KAELWEB) ⚡️
+# ⚡️ SCRIPTA (KAELWEB) ⚡️
 
                                                                            
 [ SYSTEM_STATUS: ONLINE ] > [ CONNECTIVITY: SECURE // VER 2.0.7 ] > [ ENVIRONMENT: DISCONNECTED FROM THE ALGORITHMIC NOISE ]
@@ -64,4 +64,4 @@ Plaintext
 > ACCESS_GRANTED
 > HOSTNAME: İlke Deniz
 > BRAND   : Racoon Dev
-> STATUS  : Computer Engineering Student // Year 2
+
