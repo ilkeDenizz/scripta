@@ -2,10 +2,141 @@
 <html lang="en-us">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Street Fighter Alpha - Web</title>
     <link rel="StyleSheet" type="text/css" href="css/sfa.css" />
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: #1b1712;
+            overflow-x: hidden;
+        }
+
+        .kw-topbar {
+            font-family: 'IBM Plex Mono', 'Courier New', monospace;
+            font-size: 0.75rem;
+            color: #cdbfa8;
+            background: #262119;
+            border-bottom: 1px solid #3a3327;
+            padding: 12px clamp(14px, 4vw, 32px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .kw-topbar a {
+            color: #8fb3a0;
+            text-decoration: none;
+        }
+
+        .kw-topbar a:hover {
+            text-decoration: underline;
+        }
+
+        #stageScaleWrapper {
+            position: relative;
+            margin: 18px auto 0;
+            overflow: hidden;
+        }
+
+        /* On-screen touch controls: hidden by default, shown on small / touch screens */
+        .touch-controls {
+            display: none;
+        }
+
+        @media (max-width: 900px), (pointer: coarse) {
+            .touch-controls {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+                gap: 10px;
+                position: fixed;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+                background: linear-gradient(to top, rgba(20, 17, 12, 0.92), rgba(20, 17, 12, 0.55));
+                z-index: 5000;
+                touch-action: none;
+                -webkit-user-select: none;
+                user-select: none;
+            }
+        }
+
+        .tc-btn {
+            font-family: 'IBM Plex Mono', 'Courier New', monospace;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #f2ece1;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 10px;
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .tc-btn.active,
+        .tc-btn:active {
+            background: #3f5d50;
+            border-color: #3f5d50;
+        }
+
+        .tc-dpad {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tc-dpad-row {
+            display: flex;
+            gap: 6px;
+        }
+
+        .tc-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .tc-row {
+            display: flex;
+            gap: 6px;
+        }
+
+        .tc-row .tc-btn {
+            width: 44px;
+            height: 44px;
+            font-size: 0.68rem;
+            border-radius: 50%;
+        }
+
+        .tc-system {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+
+        .tc-system .tc-btn {
+            width: 60px;
+            height: 34px;
+            border-radius: 6px;
+            font-size: 0.62rem;
+        }
+    </style>
 </head>
 <body>
+    <div class="kw-topbar">
+        <span>STREET FIGHTER ALPHA</span>
+        <a href="index.html">← Siteye dön</a>
+    </div>
+    <div id="stageScaleWrapper">
     <div id="pnlStage" class="stage" style="width:768px;">
         <script type="text/javascript">
             function OnStageImagesLoaded() {}
@@ -224,6 +355,98 @@
             <button onclick="__debugModal.open()">Help & Settings</button>
         </div>
     </div>
+    </div><!-- /#stageScaleWrapper -->
+
+    <div class="touch-controls" id="touchControls" aria-hidden="true">
+        <div class="tc-dpad">
+            <button type="button" class="tc-btn" data-key="38">▲</button>
+            <div class="tc-dpad-row">
+                <button type="button" class="tc-btn" data-key="37">◀</button>
+                <button type="button" class="tc-btn" data-key="40">▼</button>
+                <button type="button" class="tc-btn" data-key="39">▶</button>
+            </div>
+        </div>
+        <div class="tc-actions">
+            <div class="tc-row">
+                <button type="button" class="tc-btn" data-key="65">LP</button>
+                <button type="button" class="tc-btn" data-key="83">MP</button>
+                <button type="button" class="tc-btn" data-key="68">HP</button>
+            </div>
+            <div class="tc-row">
+                <button type="button" class="tc-btn" data-key="90">LK</button>
+                <button type="button" class="tc-btn" data-key="88">MK</button>
+                <button type="button" class="tc-btn" data-key="67">HK</button>
+            </div>
+        </div>
+        <div class="tc-system">
+            <button type="button" class="tc-btn" data-key="17">KREDİ</button>
+            <button type="button" class="tc-btn" data-key="13">BAŞLAT</button>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            /* ---- Sahneyi küçük ekranlara sığdırma ---- */
+            var BASE_W = 768, BASE_H = 576;
+            var wrapper = document.getElementById('stageScaleWrapper');
+            var stage = document.getElementById('pnlStage');
+
+            function fitStage() {
+                if (!wrapper || !stage) return;
+                var availW = wrapper.parentElement.clientWidth || window.innerWidth;
+                var scale = Math.min(1, availW / BASE_W);
+                stage.style.transform = 'scale(' + scale + ')';
+                stage.style.transformOrigin = 'top left';
+                wrapper.style.width = Math.floor(BASE_W * scale) + 'px';
+                wrapper.style.height = Math.floor(BASE_H * scale) + 'px';
+            }
+
+            window.addEventListener('resize', fitStage);
+            window.addEventListener('orientationchange', fitStage);
+            document.addEventListener('DOMContentLoaded', fitStage);
+            fitStage();
+
+            /* ---- Dokunmatik kontroller: gerçek klavye olayları üretir ---- */
+            function sendKey(type, code) {
+                var evt;
+                try {
+                    evt = new KeyboardEvent(type, { bubbles: true, cancelable: true });
+                } catch (e) {
+                    evt = document.createEvent('Event');
+                    evt.initEvent(type, true, true);
+                }
+                try {
+                    Object.defineProperty(evt, 'keyCode', { get: function () { return code; } });
+                    Object.defineProperty(evt, 'which', { get: function () { return code; } });
+                } catch (e) {}
+                document.dispatchEvent(evt);
+            }
+
+            var buttons = document.querySelectorAll('.tc-btn');
+            for (var i = 0; i < buttons.length; i++) {
+                (function (btn) {
+                    var code = parseInt(btn.getAttribute('data-key'), 10);
+                    var press = function (e) {
+                        e.preventDefault();
+                        btn.classList.add('active');
+                        sendKey('keydown', code);
+                    };
+                    var release = function (e) {
+                        if (e) e.preventDefault();
+                        btn.classList.remove('active');
+                        sendKey('keyup', code);
+                    };
+                    btn.addEventListener('touchstart', press, { passive: false });
+                    btn.addEventListener('touchend', release, { passive: false });
+                    btn.addEventListener('touchcancel', release, { passive: false });
+                    btn.addEventListener('mousedown', press);
+                    btn.addEventListener('mouseup', release);
+                    btn.addEventListener('mouseleave', release);
+                })(buttons[i]);
+            }
+        })();
+    </script>
+
     <div id="pnlStatus">
         <br /><span class="frame-rate">Game speed: <span id="spnSpeed">?</span>/100</span>
         <br />
