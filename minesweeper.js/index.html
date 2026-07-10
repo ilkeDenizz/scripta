@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mayın Tarlası — Kaelweb</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper: #F6F2EA;
+            --paper-deep: #EEE8DA;
+            --ink: #262119;
+            --ink-soft: #746B5C;
+            --accent: #3F5D50;
+            --accent-soft: rgba(63, 93, 80, 0.10);
+            --line: #DCD3C0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--paper);
+            color: var(--ink);
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 24px 16px;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .back-link {
+            align-self: flex-start;
+            margin: 0 auto 18px;
+            width: 100%;
+            max-width: 340px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.04em;
+            color: var(--ink-soft);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: var(--accent);
+        }
+
+        .game-title {
+            font-family: 'Fraunces', serif;
+            font-weight: 600;
+            font-size: 1.3rem;
+            color: var(--ink);
+            margin-bottom: 4px;
+            text-align: center;
+        }
+
+        .game-subtitle {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Oyun paneli */
+        .minesweeper-window {
+            background: var(--paper-deep);
+            border: 1px solid var(--line);
+            padding: 18px;
+            box-shadow: 0 10px 28px rgba(38, 33, 25, 0.10);
+            max-width: 100%;
+        }
+
+        /* Skor tablosu */
+        .scoreboard {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--paper);
+            border: 1px solid var(--line);
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+
+        .digit-display {
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--accent);
+            font-size: 1.3rem;
+            font-weight: 500;
+            background: #fff;
+            padding: 4px 10px;
+            border: 1px solid var(--line);
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .face-btn {
+            background: var(--paper);
+            border: 1px solid var(--ink);
+            color: var(--ink);
+            font-size: 1.1rem;
+            padding: 5px 12px;
+            cursor: pointer;
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 500;
+            transition: 0.2s ease;
+        }
+
+        .face-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Mobil mod seçici buton */
+        .mode-control {
+            width: 100%;
+            background: var(--paper);
+            border: 1px solid var(--line);
+            padding: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .mode-btn {
+            background: var(--paper-deep);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 500;
+            padding: 9px 16px;
+            cursor: pointer;
+            font-size: 0.78rem;
+            letter-spacing: 0.04em;
+            transition: all 0.2s ease;
+            width: 100%;
+            max-width: 280px;
+            text-align: center;
+        }
+
+        .mode-btn.flag-active {
+            background: var(--accent);
+            color: var(--paper);
+        }
+
+        /* Izgara */
+        #grid {
+            display: grid;
+            grid-template-columns: repeat(10, 30px);
+            grid-template-rows: repeat(10, 30px);
+            gap: 2px;
+            background: var(--line);
+            padding: 2px;
+            border: 1px solid var(--line);
+            justify-content: center;
+        }
+
+        /* Hücreler (dokunmatik ekran için min. 30x30px hedef) */
+        .cell {
+            width: 30px;
+            height: 30px;
+            background: #fff;
+            border: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1rem;
+            font-family: 'IBM Plex Mono', monospace;
+            cursor: pointer;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            transition: background 0.15s ease;
+        }
+
+        .cell:hover {
+            background: var(--accent-soft);
+        }
+
+        .cell.revealed {
+            background: var(--paper);
+            border: 1px solid var(--line);
+            cursor: default;
+        }
+
+        .cell.revealed:hover {
+            background: var(--paper);
+        }
+
+        /* Komşu sayısı renkleri — sıcak, ölçülü palet */
+        .cell[data-count="1"] { color: #3F6D8E; }
+        .cell[data-count="2"] { color: var(--accent); }
+        .cell[data-count="3"] { color: #A6483A; }
+        .cell[data-count="4"] { color: #8A6D1E; }
+        .cell[data-count="5"] { color: #6E4A6E; }
+        .cell[data-count="6"] { color: #3F6D8E; }
+        .cell[data-count="7"] { color: var(--ink); }
+        .cell[data-count="8"] { color: var(--ink-soft); }
+
+        .cell.mine {
+            background: #A6483A !important;
+            color: #fff !important;
+            border-color: #A6483A !important;
+        }
+
+        .cell.flagged {
+            color: var(--accent) !important;
+        }
+
+        /* Küçük ekran optimizasyonu */
+        @media (max-width: 360px) {
+            #grid {
+                grid-template-columns: repeat(10, 26px);
+                grid-template-rows: repeat(10, 26px);
+            }
+            .cell {
+                width: 26px;
+                height: 26px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <a class="back-link" href="../index.html">← Siteye dön</a>
+
+    <div class="game-title">Mayın Tarlası</div>
+    <div class="game-subtitle">Bulmaca</div>
+
+    <div class="minesweeper-window">
+        <div class="mode-control">
+            <button id="mode-toggle-btn" class="mode-btn">MOD: KAZMA [⛏️]</button>
+        </div>
+
+        <div class="scoreboard">
+            <div id="mine-count" class="digit-display">012</div>
+            <button id="restart-btn" class="face-btn">:-)</button>
+            <div id="timer" class="digit-display">000</div>
+        </div>
+        <div id="grid"></div>
+    </div>
+
+    <script>
+        const rows = 10;
+        const cols = 10;
+        const minesCount = 12;
+        let grid = [];
+        let gameOver = false;
+        let timerInterval = null;
+        let timeElapsed = 0;
+        let timerStarted = false;
+
+        // Mobil mod kontrolü: false = Kazma/Açma modifikasyonu, true = İşaretleme/Bayrak modifikasyonu
+        let isFlagMode = false;
+
+        const gridElement = document.getElementById('grid');
+        const mineCountElement = document.getElementById('mine-count');
+        const timerElement = document.getElementById('timer');
+        const restartBtn = document.getElementById('restart-btn');
+        const modeToggleBtn = document.getElementById('mode-toggle-btn');
+
+        modeToggleBtn.addEventListener('click', () => {
+            isFlagMode = !isFlagMode;
+            if (isFlagMode) {
+                modeToggleBtn.classList.add('flag-active');
+                modeToggleBtn.innerText = "MOD: BAYRAK [🚩]";
+            } else {
+                modeToggleBtn.classList.remove('flag-active');
+                modeToggleBtn.innerText = "MOD: KAZMA [⛏️]";
+            }
+        });
+
+        function initGame() {
+            gridElement.innerHTML = '';
+            grid = [];
+            gameOver = false;
+            timeElapsed = 0;
+            timerStarted = false;
+            isFlagMode = false;
+            modeToggleBtn.classList.remove('flag-active');
+            modeToggleBtn.innerText = "MOD: KAZMA [⛏️]";
+            clearInterval(timerInterval);
+            timerElement.innerText = "000";
+            mineCountElement.innerText = String(minesCount).padStart(3, '0');
+            restartBtn.innerText = ":-)";
+
+            for (let r = 0; r < rows; r++) {
+                grid[r] = [];
+                for (let c = 0; c < cols; c++) {
+                    const cellElement = document.createElement('div');
+                    cellElement.classList.add('cell');
+
+                    cellElement.addEventListener('click', () => handleCellClick(r, c));
+
+                    cellElement.addEventListener('contextmenu', (e) => {
+                        e.preventDefault();
+                        flagCell(r, c);
+                    });
+
+                    gridElement.appendChild(cellElement);
+                    grid[r][c] = {
+                        mine: false,
+                        revealed: false,
+                        flagged: false,
+                        count: 0,
+                        element: cellElement
+                    };
+                }
+            }
+
+            let placedMines = 0;
+            while (placedMines < minesCount) {
+                let r = Math.floor(Math.random() * rows);
+                let c = Math.floor(Math.random() * cols);
+                if (!grid[r][c].mine) {
+                    grid[r][c].mine = true;
+                    placedMines++;
+                }
+            }
+
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    if (grid[r][c].mine) continue;
+                    let count = 0;
+                    for (let dr = -1; dr <= 1; dr++) {
+                        for (let dc = -1; dc <= 1; dc++) {
+                            if (r + dr >= 0 && r + dr < rows && c + dc >= 0 && c + dc < cols) {
+                                if (grid[r + dr][c + dc].mine) count++;
+                            }
+                        }
+                    }
+                    grid[r][c].count = count;
+                }
+            }
+        }
+
+        function startTimer() {
+            timerStarted = true;
+            timerInterval = setInterval(() => {
+                timeElapsed++;
+                timerElement.innerText = String(timeElapsed).padStart(3, '0');
+                if (timeElapsed >= 999) clearInterval(timerInterval);
+            }, 1000);
+        }
+
+        function handleCellClick(r, c) {
+            if (isFlagMode) {
+                flagCell(r, c);
+            } else {
+                revealCell(r, c);
+            }
+        }
+
+        function revealCell(r, c) {
+            if (gameOver || grid[r][c].revealed || grid[r][c].flagged) return;
+            if (!timerStarted) startTimer();
+
+            const cell = grid[r][c];
+            cell.revealed = true;
+            cell.element.classList.add('revealed');
+
+            if (cell.mine) {
+                endGame(false);
+                return;
+            }
+
+            if (cell.count > 0) {
+                cell.element.innerText = cell.count;
+                cell.element.setAttribute('data-count', cell.count);
+            } else {
+                for (let dr = -1; dr <= 1; dr++) {
+                    for (let dc = -1; dc <= 1; dc++) {
+                        if (r + dr >= 0 && r + dr < rows && c + dc >= 0 && c + dc < cols) {
+                            revealCell(r + dr, c + dc);
+                        }
+                    }
+                }
+            }
+            checkWin();
+        }
+
+        function flagCell(r, c) {
+            if (gameOver || grid[r][c].revealed) return;
+            const cell = grid[r][c];
+            cell.flagged = !cell.flagged;
+
+            if (cell.flagged) {
+                cell.element.classList.add('flagged');
+                cell.element.innerText = 'P';
+                let currentCount = parseInt(mineCountElement.innerText);
+                mineCountElement.innerText = String(Math.max(0, currentCount - 1)).padStart(3, '0');
+            } else {
+                cell.element.classList.remove('flagged');
+                cell.element.innerText = '';
+                let currentCount = parseInt(mineCountElement.innerText);
+                mineCountElement.innerText = String(currentCount + 1).padStart(3, '0');
+            }
+        }
+
+        function endGame(isWin) {
+            gameOver = true;
+            clearInterval(timerInterval);
+            restartBtn.innerText = isWin ? "B-)" : "X-(";
+
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    if (grid[r][c].mine) {
+                        grid[r][c].element.classList.add('mine');
+                        grid[r][c].element.innerText = 'X';
+                    }
+                }
+            }
+        }
+
+        function checkWin() {
+            let win = true;
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    if (!grid[r][c].mine && !grid[r][c].revealed) win = false;
+                }
+            }
+            if (win) endGame(true);
+        }
+
+        restartBtn.addEventListener('click', initGame);
+        initGame();
+    </script>
+</body>
+</html>
