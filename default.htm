@@ -394,15 +394,18 @@
             var wrapper = document.getElementById('stageScaleWrapper');
             var stage = document.getElementById('pnlStage');
 
-            function fitStage() {
-                if (!wrapper || !stage) return;
-                var availW = wrapper.parentElement.clientWidth || window.innerWidth;
-                var scale = Math.min(1, availW / BASE_W);
-                stage.style.transform = 'scale(' + scale + ')';
-                stage.style.transformOrigin = 'top left';
-                wrapper.style.width = Math.floor(BASE_W * scale) + 'px';
-                wrapper.style.height = Math.floor(BASE_H * scale) + 'px';
-            }
+           function fitStage() {
+    if (!wrapper || !stage) return;
+    var availW = wrapper.parentElement.clientWidth || window.innerWidth;
+    var scale = Math.min(1, availW / BASE_W);
+    
+    // TransformOrigin'i ortalayacak şekilde değiştir
+    stage.style.transform = 'scale(' + scale + ')';
+    stage.style.transformOrigin = 'center top'; // 'top left' yerine 'center top'
+    
+    wrapper.style.width = '100%'; // Kapsayıcıyı tam genişlikte tut
+    wrapper.style.height = Math.floor(BASE_H * scale) + 'px';
+}
 
             window.addEventListener('resize', fitStage);
             window.addEventListener('orientationchange', fitStage);
