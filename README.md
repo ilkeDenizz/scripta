@@ -1,67 +1,51 @@
-# ⚡️ TERMINAL // PORTAL (KAELWEB) ⚡️
+Scripta 🕹️
+Scripta is a minimalist web portal that brings together retro games that can be played directly through the browser without requiring any installation, plugins, or additional software.
 
-                                                                           
-[ SYSTEM_STATUS: ONLINE ] > [ CONNECTIVITY: SECURE // VER 2.0.7 ] > [ ENVIRONMENT: DISCONNECTED FROM THE ALGORITHMIC NOISE ]
+🚀 About the Project
+The main goal of Scripta is to bring nostalgic gaming experiences to modern browsers. Users can access games immediately upon entering the site, with no preparation needed.
 
-🛰️ OVERVIEW // MANIFESTO
-KAELWEB is an isolated digital sanctuary built against the algorithmic noise and homogenized designs of the modern web. It is a personal terminal portal crafted with pure HTML, CSS, and vanilla JavaScript, blending a retro-cyberpunk aesthetic, command-line interface (CLI) nuances, and CRT monitor simulation shaders (Scanlines).
+🕹️ Game Library
+The portal currently features the following games and categories:
 
-"This terminal serves no algorithm. It serves only curiosity and the craft."
+Arcade Salon: Browser-based emulation of the 1995 classic fighting game, Street Fighter Alpha.
 
-🔮 CORE SUBSYSTEMS // FEATURES
-The portal features interactive modules and subsystems built on top of a seamless Single Page Application (SPA) architecture:
+Puzzle: A lightweight, modern Minesweeper engine written from scratch.
 
-🖥️ Interactive Terminal Shell: The core navigation hub utilizing a custom-built section management setup (Tab System).
+Clicker: Addictive clicking games like Cookie Clicker.
 
-🎵 Station Control (Music Player): An interactive audio player with a cybernetic interface to accompany late-night coding sessions.
+🔗 Credits & Sources
+These games are powered by the following projects:
 
-📺 CRT Scanline Shaders: An animated scanning line effect that fuels the authentic hacker atmosphere of the screen.
+[Street Fighter Alpha]: [Link to the source/repository]
 
-🎨 Artifacts Gallery: An interactive visual block displaying a customized cyber-filtered rendering of Medusa.
+[Cookie Clicker]: [Link to the source/repository]
 
-🕹️ INTEGRATED ARCADE ZONE // MODULES
-The system architecture triggers two lightweight retro game modules running in separate tabs, completely free from heavy external framework dependencies:
+🎵 Features
+Browser-Based: No extra software needed; direct access via your browser.
 
-1. 🥊 Street Fighter Alpha (Retro Arcade Cabinet)
-A legendary arcade fighting game powered by a web-based Emscripten/JavaScript emulation layer, fully integrated with arcade coin and match mechanisms.
+Integrated Music Player: A relaxing music playlist to listen to while browsing the site.
 
-Insert Coin: CTRL
+Minimalist Design: A clean interface focused on the gaming experience.
 
-Start Game: ENTER
+🛠️ Tech Stack
+(You can list the technologies you used here, e.g., HTML5, CSS3, JavaScript, Firebase, Vercel, etc.)
 
-2. 💣 Subsystem: Minesweeper (Custom Built Engine)
-A lightweight and modern Minesweeper engine stripped of legacy web bloat. Coded entirely from scratch using native 2D Matrix proximity calculations and Flood Fill algorithms for automated zero-cell expansions, stylized with custom Matrix Green and Glitch Pink parameters.
-
-Left Click: Reveal Cell
-
-Right Click: Deploy Cyber Flag (P)
-
-🤝 CREDITS & ATTRIBUTION
-
-Street Fighter Emulator: The web-based CPS-2 emulation infrastructure is integrated using open-source retro gaming emulation layers. The original emulation core and ROM loading mechanics are adapted from the official project repository: [gamedev8.github.io/js-sfa](https://gamedev8.github.io/js-sfa/default.htm)
-
-🛠️ TECH STACK // SYSTEM COMPONENTS
-Plaintext
-[⚙️] CORE       :: HTML5 // CSS3 (Custom Variables)
-[🧠] LOGIC      :: Vanilla JavaScript (ES6+ Native DOM)
-[🎨] SHADERS    :: CSS Keyframe Animations // CSS Gradients
-[📦] DEPLOYMENT :: GitHub Actions & GitHub Pages
-📥 LOCAL INSTALLATION // YEREL KURULUM
-To deploy this subsystem on your local terminal environment:
-
-Clone the repository:
+📦 Installation & Setup
+To run the project locally on your machine:
 
 Bash
-git clone [https://github.com/ilkeDenizz/kaelweb.git](https://github.com/ilkeDenizz/kaelweb.git)
-Navigate into the project directory:
+# Clone the repository
+git clone https://github.com/ilkedenizz/scripta.git
 
-Bash
-cd kaelweb
-Fire up the index.html file in your browser!
+# Navigate to the project directory
+cd scripta
 
-📡 TRANSMISSION // CONTACT
-Plaintext
-> ACCESS_GRANTED
-> HOSTNAME: İlke Deniz
-> BRAND   : Racoon Dev
-> STATUS  : Computer Engineering Student // Year 2
+# Install dependencies (if applicable)
+npm install
+
+# Start the development server
+npm start
+🤝 Contributing
+If you would like to add new games or improve existing ones, feel free to submit a pull request!
+
+Happy gaming! ✨
